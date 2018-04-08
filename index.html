@@ -2,30 +2,91 @@
 <html lang="en" data-framework="jquery">
 	<head>
 		<meta charset="utf-8">
-		<title>jQuery • TodoMVC</title>
-		<link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+		<title>Shopping List</title>
 		<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
 		<link rel="stylesheet" href="css/app.css">
 	</head>
 	<body>
-		<section id="todoapp">
-			<header id="header">
-				<h1>todos</h1>
-				<input id="new-todo" placeholder="What needs to be done?" autofocus>
-			</header>
-			<section id="main">
-				<input id="toggle-all" type="checkbox">
-				<label for="toggle-all">Mark all as complete</label>
-				<ul id="todo-list"></ul>
+		<h1>Shopping List</h1>
+
+		<section class="list-wraper">
+
+	<!-- Sticky List section -->
+			<section id="sticky-items">
+				<h2>Sticky Items</h2>
+			    <input class="new-item" placeholder="Add Itme to the list" autofocus>
+				<section class="main">
+					<input id="toggle-all" type="checkbox">
+					<label for="toggle-all">Mark all as complete</label>
+					<ul id="sticky-ul"></ul>
+				</section>
+				<footer id="footer"></footer>
 			</section>
-			<footer id="footer"></footer>
-		</section>
+	<!-- End Sticky List section -->
+
+	<!-- Sprouts List section -->
+			<section id="sprouts-list">
+				<h2>Sprouts List</h2>
+			    <input class="new-item" placeholder="Add Itme to the list" autofocus>
+				<section class="main">
+					<input id="toggle-all" type="checkbox">
+					<label for="toggle-all">Mark all as complete</label>
+					<ul id="sprouts-ul"></ul>
+				</section>
+				<footer id="footer"></footer>
+			</section>
+	<!-- End Sprouts List section -->
+
+	<!-- Trader Joes List section -->
+			<section id="traderJoes-list">
+				<h2>Trader Joes</h2>
+			    <input class="new-item" placeholder="Add Itme to the list" autofocus>
+				<section class="main">
+					<input id="toggle-all" type="checkbox">
+					<label for="toggle-all">Mark all as complete</label>
+					<ul id="traderJoes-ul"></ul>
+				</section>
+				<footer id="footer"></footer>
+			</section>
+	<!-- End Trader Joes List section -->
+
+	<!-- Walmart List section -->
+			<section id="walmart-list">
+				<h2>Walmart</h2>
+			    <input class="new-item" placeholder="Add Itme to the list" autofocus>
+				<section class="main">
+					<input id="toggle-all" type="checkbox">
+					<label for="toggle-all">Mark all as complete</label>
+					<ul id="walmart-ul"></ul>
+				</section>
+				<footer id="footer"></footer>
+			</section>
+	<!-- End Walmart List section -->
+
+	<!-- Misc. List section -->
+			<section id="misc-list">
+				<h2>Misc.</h2>
+			    <input class="new-item" placeholder="Add Itme to the list" autofocus>
+				<section class="main">
+					<input id="toggle-all" type="checkbox">
+					<label for="toggle-all">Mark all as complete</label>
+					<ul id="misc-ul"></ul>
+				</section>
+				<footer id="footer"></footer>
+			</section>
+	<!-- End Misc. List section -->
+		
+		</section> <!-- End list wraper -->
+	
 		<footer id="info">
 			<p>Double-click to edit a todo</p>
 			<p>Created by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
 			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
 		</footer>
-		<script id="todo-template" type="text/x-handlebars-template">
+
+	<!-- Handlebars templates -->
+		
+		<script class="list-template" type="text/x-handlebars-template">
 			{{#this}}
 			<li {{#if completed}}class="completed"{{/if}} data-id="{{id}}">
 				<div class="view">
@@ -37,6 +98,11 @@
 			</li>
 		{{/this}}
 		</script>
+
+
+	<!-- Footer templates -->
+
+	<!-- Sticky footer template -->
 		<script id="footer-template" type="text/x-handlebars-template">
 			<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
 			<ul id="filters">
@@ -52,7 +118,10 @@
 			</ul>
 			{{#if completedTodos}}<button id="clear-completed">Clear completed</button>{{/if}}
 		</script>
-		<script src="node_modules/todomvc-common/base.js"></script>
+	<!-- End Sticky footer template -->
+	<!-- End Footer templates -->
+	<!-- End templates -->
+
 		<script src="node_modules/jquery/dist/jquery.js"></script>
 		<script src="node_modules/handlebars/dist/handlebars.js"></script>
 		<script src="node_modules/director/build/director.js"></script>

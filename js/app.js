@@ -56,6 +56,7 @@ jQuery(function ($) {
 			}).init('/all');
 		},
 		bindEvents: function () {
+			console.log();
 			$('.new-item').on('keyup', this.create.bind(this));
 			// $('#toggle-all').on('change', this.toggleAll.bind(this));
 			// $('#footer').on('click', '#clear-completed', this.destroyCompleted.bind(this));
@@ -67,35 +68,35 @@ jQuery(function ($) {
 			// 	.on('click', '.destroy', this.destroy.bind(this));
 		},
 		render: function () {
-			var stickyItems = this.stickyItems.filter.bind(this);
-			var sproutsList = this.sproutsList.filter.bind(this);;
+			var stickyItems = this.stickyItems;
+			var sproutsList = this.sproutsList;
 			var tjsList = this.getFilteredTjsList();
 			var walmartList = this.getFilteredWalmartList();
 			var miscList = this.getFilteredMiscList();
-			$('#sticky-ul').html(this.listTemplate(stickyItems));
-			$('#sprouts-ul').html(this.listTemplate(sproutsList));
+			$('#sticky-ul').html(this.listTemplate(stickyItems.filter));
+			$('#sprouts-ul').html(this.listTemplate(sproutsList.filter));
 			$('#traderJoes-ul').html(this.listTemplate(this.shoppingList));
 			$('#walmart-ul').html(this.listTemplate(this.shoppingList));
 			$('#misc-ul').html(this.listTemplate(this.shoppingList));
 			// $('.main').toggle(todos.length > 0);
 			// $('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
-			// this.renderFooter();
+			this.renderFooter();
 			// $('.new-item').focus();
-			this.sproutsList.itemsLeft();
+
 			util.store('shoppingList', this.shoppingList);
 		},
-		// renderFooter: function () {
-		// 	var todoCount = this.todos.length;
-		// 	var activeTodoCount = this.getActiveTodos().length;
-		// 	var template = this.footerTemplate({
-		// 		activeTodoCount: activeTodoCount,
-		// 		activeTodoWord: util.pluralize(activeTodoCount, 'item'),
-		// 		completedTodos: todoCount - activeTodoCount,
-		// 		filter: this.filter
-		// 	});
+		renderFooter: function () {
+			var shoppingList = this.shoppingList.length;
+			// var activeTodoCount = this.getActiveTodos().length;
+			var template = this.footerTemplate({
+				// activeTodoCount: activeTodoCount,
+				// activeTodoWord: util.pluralize(activeTodoCount, 'item'),
+				// completedTodos: todoCount - activeTodoCount,
+				filter: this.filter
+			});
 
-		// 	$('#footer').toggle(todoCount > 0).html(template);
-		// },
+			$('#footer').toggle(shoppingList > 0).html(template);
+		},
 		// toggleAll: function (e) {
 		// 	var isChecked = $(e.target).prop('checked');
 
@@ -120,11 +121,11 @@ jQuery(function ($) {
 		stickyItems: {
 			filter: function () {
 				if (this.filter === 'items-left') {
-					return this.shoppingList;
+					
 				}
 
 				if (this.filter === 'completed') {
-					return this.getCompletedTodos();
+					return;
 				}
 
 				return {title: 'test123'};
@@ -134,49 +135,57 @@ jQuery(function ($) {
 		},
 		sproutsList: {
 			filter: function () {
-				if (this.filter === 'items-left') {
-					return this.itemsLeft;
+
+				if (App.filter === 'sprouts-items-left') {
+					return App.sproutsList.itemsLeft();
 				}
 
-				if (this.filter === 'items-acquired') {
-					return this.getCompletedTodos();
+				if (App.filter === 'sprouts-items-acquired') {
+					return App.sproutsList.itemsAcquired;
 				}
 
-				return {title: 'sproutsList'};
+				return {title: 'sproutsList test'};
 			},
 			itemsLeft: function () {
-				var shoppingList = this.shoppingList; // need to learn about this
+				return App.shoppingList.filter(function (item) {
+					return item.list === 'sprouts-list';
+				});
+			},
+			itemsAcquired: function () {
+				return App.shoppingList.itmesLeft.filter(function (item) {
+					return item.completed;
+				});
 			}
 		},
 		getFilteredTjsList: function () {
 			if (this.filter === 'active') {
-				return this.getActiveTodos();
+				return
 			}
 
 			if (this.filter === 'completed') {
-				return this.getCompletedTodos();
+				return;
 			}
 
 			return this.todos;
 		},
 		getFilteredWalmartList: function () {
 			if (this.filter === 'active') {
-				return this.getActiveTodos();
+				return;
 			}
 
 			if (this.filter === 'completed') {
-				return this.getCompletedTodos();
+				return;
 			}
 
 			return this.todos;
 		},
 		getFilteredMiscList: function () {
 			if (this.filter === 'active') {
-				return this.getActiveTodos();
+				return;
 			}
 
 			if (this.filter === 'completed') {
-				return this.getCompletedTodos();
+				return;
 			}
 
 			return this.todos;
@@ -265,3 +274,13 @@ jQuery(function ($) {
 
 	App.init();
 });
+
+
+// Notes;
+// - Working on sproutsList > itemsAcquired method, I think it works
+// but I have not updated App.bind so you cannot set the completed property to true.
+
+// - update bind so that it works with new App
+// - create sprouts footer
+// - update/create rest of sprouts object.
+// - explore this

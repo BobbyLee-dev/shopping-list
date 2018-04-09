@@ -14,7 +14,7 @@
 	<!-- Sticky List section -->
 			<section id="sticky-items">
 				<h2>Sticky Items</h2>
-			    <input class="new-item" placeholder="Add Itme to the list" autofocus>
+			    <input class="new-item" placeholder="Add Item to the list" autofocus>
 				<section class="main">
 					<input id="toggle-all" type="checkbox">
 					<label for="toggle-all">Mark all as complete</label>
@@ -27,7 +27,7 @@
 	<!-- Sprouts List section -->
 			<section id="sprouts-list">
 				<h2>Sprouts List</h2>
-			    <input class="new-item" placeholder="Add Itme to the list" autofocus>
+			    <input class="new-item" placeholder="Add Item to the list" autofocus>
 				<section class="main">
 					<input id="toggle-all" type="checkbox">
 					<label for="toggle-all">Mark all as complete</label>
@@ -40,7 +40,7 @@
 	<!-- Trader Joes List section -->
 			<section id="traderJoes-list">
 				<h2>Trader Joes</h2>
-			    <input class="new-item" placeholder="Add Itme to the list" autofocus>
+			    <input class="new-item" placeholder="Add Item to the list" autofocus>
 				<section class="main">
 					<input id="toggle-all" type="checkbox">
 					<label for="toggle-all">Mark all as complete</label>
@@ -53,7 +53,7 @@
 	<!-- Walmart List section -->
 			<section id="walmart-list">
 				<h2>Walmart</h2>
-			    <input class="new-item" placeholder="Add Itme to the list" autofocus>
+			    <input class="new-item" placeholder="Add Item to the list" autofocus>
 				<section class="main">
 					<input id="toggle-all" type="checkbox">
 					<label for="toggle-all">Mark all as complete</label>
@@ -66,7 +66,7 @@
 	<!-- Misc. List section -->
 			<section id="misc-list">
 				<h2>Misc.</h2>
-			    <input class="new-item" placeholder="Add Itme to the list" autofocus>
+			    <input class="new-item" placeholder="Add Item to the list" autofocus>
 				<section class="main">
 					<input id="toggle-all" type="checkbox">
 					<label for="toggle-all">Mark all as complete</label>
@@ -107,10 +107,10 @@
 			<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
 			<ul id="filters">
 				<li>
-					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/all">All</a>
+					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/sprouts-items-left">All</a>
 				</li>
 				<li>
-					<a {{#eq filter 'active'}}class="selected"{{/eq}}href="#/active">Active</a>
+					<a {{#eq filter 'active'}}class="selected"{{/eq}} href="#/sprouts-items-acquired">Active</a>
 				</li>
 				<li>
 					<a {{#eq filter 'completed'}}class="selected"{{/eq}}href="#/completed">Completed</a>

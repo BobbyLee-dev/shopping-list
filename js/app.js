@@ -67,13 +67,13 @@ jQuery(function ($) {
 			// 	.on('click', '.destroy', this.destroy.bind(this));
 		},
 		render: function () {
-			var stickyItems = this.getFilteredStickyItems();
-			var sproutsList = this.getFilteredSproutsList();
+			var stickyItems = this.stickyItems.filter.bind(this);
+			var sproutsList = this.sproutsList.filter.bind(this);;
 			var tjsList = this.getFilteredTjsList();
 			var walmartList = this.getFilteredWalmartList();
 			var miscList = this.getFilteredMiscList();
-			$('#sticky-ul').html(this.listTemplate(this.stickyItems.filter()));
-			$('#sprouts-ul').html(this.listTemplate({title: 'test'}));
+			$('#sticky-ul').html(this.listTemplate(stickyItems));
+			$('#sprouts-ul').html(this.listTemplate(sproutsList));
 			$('#traderJoes-ul').html(this.listTemplate(this.shoppingList));
 			$('#walmart-ul').html(this.listTemplate(this.shoppingList));
 			$('#misc-ul').html(this.listTemplate(this.shoppingList));
@@ -81,7 +81,7 @@ jQuery(function ($) {
 			// $('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
 			// this.renderFooter();
 			// $('.new-item').focus();
-			console.log(this.stickyItems.test());
+			this.sproutsList.itemsLeft();
 			util.store('shoppingList', this.shoppingList);
 		},
 		// renderFooter: function () {
@@ -116,11 +116,10 @@ jQuery(function ($) {
 		// 	});
 		// },
 
-		// Filter methods.
+		
 		stickyItems: {
 			filter: function () {
-				console.log(this);
-				if (this.filter === 'active') {
+				if (this.filter === 'items-left') {
 					return this.shoppingList;
 				}
 
@@ -128,34 +127,26 @@ jQuery(function ($) {
 					return this.getCompletedTodos();
 				}
 
-				return this.shoppingList;
-			},
-			test: function () {
-				console.log(this);
+				return {title: 'test123'};
 			}
+
 			
 		},
-		getFilteredStickyItems: function () {
-			if (this.filter === 'active') {
-				return this.shoppingList;
-			}
+		sproutsList: {
+			filter: function () {
+				if (this.filter === 'items-left') {
+					return this.itemsLeft;
+				}
 
-			if (this.filter === 'completed') {
-				return this.getCompletedTodos();
-			}
+				if (this.filter === 'items-acquired') {
+					return this.getCompletedTodos();
+				}
 
-			return this.shoppingList;
-		},
-		getFilteredSproutsList: function () {
-			if (this.filter === 'active') {
-				return this.getActiveTodos();
+				return {title: 'sproutsList'};
+			},
+			itemsLeft: function () {
+				var shoppingList = this.shoppingList; // need to learn about this
 			}
-
-			if (this.filter === 'completed') {
-				return this.getCompletedTodos();
-			}
-
-			return this.todos;
 		},
 		getFilteredTjsList: function () {
 			if (this.filter === 'active') {
@@ -189,7 +180,7 @@ jQuery(function ($) {
 			}
 
 			return this.todos;
-		}, //End Filter methods.
+		}, 
 
 
 		// destroyCompleted: function () {

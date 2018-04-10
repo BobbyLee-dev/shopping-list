@@ -44,7 +44,11 @@ jQuery(function ($) {
 			this.shoppingList = util.store('shoppingList');
 			// to set up template compile functions.
 			this.listTemplate = Handlebars.compile($('.list-template').html());
-			this.footerTemplate = Handlebars.compile($('#footer-template').html());
+			this.stickyFooterTemplate = Handlebars.compile($('#sticky-footer-template').html());
+			this.sproutsFooterTemplate = Handlebars.compile($('#sprouts-footer-template').html());
+			this.tjsFooterTemplate = Handlebars.compile($('#tjs-footer-template').html());
+			this.walmartFooterTemplate = Handlebars.compile($('#walmart-footer-template').html());
+			this.miscFooterTemplate = Handlebars.compile($('#misc-footer-template').html());
 
 			this.bindEvents();
 
@@ -56,12 +60,11 @@ jQuery(function ($) {
 			}).init('/all');
 		},
 		bindEvents: function () {
-			console.log();
 			$('.new-item').on('keyup', this.create.bind(this));
 			// $('#toggle-all').on('change', this.toggleAll.bind(this));
 			// $('#footer').on('click', '#clear-completed', this.destroyCompleted.bind(this));
-			// $('#shopping-list')
-			// 	.on('change', '.toggle', this.toggle.bind(this))
+			$('.items')
+				.on('change', '.toggle', this.toggle.bind(this))
 			// 	.on('dblclick', 'label', this.editingMode.bind(this))
 			// 	.on('keyup', '.edit', this.editKeyup.bind(this))
 			// 	.on('focusout', '.edit', this.update.bind(this))
@@ -70,32 +73,64 @@ jQuery(function ($) {
 		render: function () {
 			var stickyItems = this.stickyItems;
 			var sproutsList = this.sproutsList;
-			var tjsList = this.getFilteredTjsList();
-			var walmartList = this.getFilteredWalmartList();
-			var miscList = this.getFilteredMiscList();
+			var tjsList = this.tjsList;
+			var walmartList = this.walmartList;
+			var miscList = this.miscList;
 			$('#sticky-ul').html(this.listTemplate(stickyItems.filter));
 			$('#sprouts-ul').html(this.listTemplate(sproutsList.filter));
-			$('#traderJoes-ul').html(this.listTemplate(this.shoppingList));
-			$('#walmart-ul').html(this.listTemplate(this.shoppingList));
-			$('#misc-ul').html(this.listTemplate(this.shoppingList));
+			$('#traderJoes-ul').html(this.listTemplate(tjsList.filter));
+			$('#walmart-ul').html(this.listTemplate(walmartList.filter));
+			$('#misc-ul').html(this.listTemplate(miscList.filter));
 			// $('.main').toggle(todos.length > 0);
 			// $('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
 			this.renderFooter();
 			// $('.new-item').focus();
-
+			console.log(this.shoppingList);
 			util.store('shoppingList', this.shoppingList);
 		},
 		renderFooter: function () {
 			var shoppingList = this.shoppingList.length;
 			// var activeTodoCount = this.getActiveTodos().length;
-			var template = this.footerTemplate({
+			var stickyTemplate = this.stickyFooterTemplate({
 				// activeTodoCount: activeTodoCount,
 				// activeTodoWord: util.pluralize(activeTodoCount, 'item'),
 				// completedTodos: todoCount - activeTodoCount,
 				filter: this.filter
 			});
 
-			$('#footer').toggle(shoppingList > 0).html(template);
+			var sproutsTemplate = this.sproutsFooterTemplate({
+				// activeTodoCount: activeTodoCount,
+				// activeTodoWord: util.pluralize(activeTodoCount, 'item'),
+				// completedTodos: todoCount - activeTodoCount,
+				filter: this.filter
+			});
+
+			var tjsTemplate = this.tjsFooterTemplate({
+				// activeTodoCount: activeTodoCount,
+				// activeTodoWord: util.pluralize(activeTodoCount, 'item'),
+				// completedTodos: todoCount - activeTodoCount,
+				filter: this.filter
+			});
+
+			var walmartTemplate = this.walmartFooterTemplate({
+				// activeTodoCount: activeTodoCount,
+				// activeTodoWord: util.pluralize(activeTodoCount, 'item'),
+				// completedTodos: todoCount - activeTodoCount,
+				filter: this.filter
+			});
+
+			var miscTemplate = this.walmartFooterTemplate({
+				// activeTodoCount: activeTodoCount,
+				// activeTodoWord: util.pluralize(activeTodoCount, 'item'),
+				// completedTodos: todoCount - activeTodoCount,
+				filter: this.filter
+			});
+
+			$('#sticky-footer').toggle(shoppingList > 0).html(stickyTemplate);
+			$('#sprouts-footer').toggle(shoppingList > 0).html(sproutsTemplate);
+			$('#tjs-footer').toggle(shoppingList > 0).html(tjsTemplate);
+			$('#walmart-footer').toggle(shoppingList > 0).html(walmartTemplate);
+			$('#misc-footer').toggle(shoppingList > 0).html(miscTemplate);
 		},
 		// toggleAll: function (e) {
 		// 	var isChecked = $(e.target).prop('checked');
@@ -120,14 +155,7 @@ jQuery(function ($) {
 		
 		stickyItems: {
 			filter: function () {
-				if (this.filter === 'items-left') {
-					
-				}
-
-				if (this.filter === 'completed') {
-					return;
-				}
-
+				
 				return {title: 'test123'};
 			}
 
@@ -135,38 +163,107 @@ jQuery(function ($) {
 		},
 		sproutsList: {
 			filter: function () {
-
 				if (App.filter === 'sprouts-items-left') {
-					return App.sproutsList.itemsLeft();
+					var items = App.sproutsList.sproutsItems();
+
+					return items.filter(function (item) {
+						return !item.completed;
+					});
 				}
 
 				if (App.filter === 'sprouts-items-acquired') {
-					return App.sproutsList.itemsAcquired;
+					var items = App.sproutsList.sproutsItems();
+					
+					return items.filter(function (item) {
+						return item.completed;
+					});
 				}
 
-				return {title: 'sproutsList test'};
+				return App.sproutsList.sproutsItems();
 			},
-			itemsLeft: function () {
+			sproutsItems: function () {
 				return App.shoppingList.filter(function (item) {
 					return item.list === 'sprouts-list';
 				});
+			}
+		},
+		tjsList: {
+			filter: function () {
+				if (App.filter === 'tjs-items-left') {
+					var items = App.tjsList.tjsItems();
+
+					return items.filter(function (item) {
+						return !item.completed;
+					});
+				}
+
+				if (App.filter === 'tjs-items-acquired') {
+					var items = App.tjsList.tjsItems();
+					
+					return items.filter(function (item) {
+						return item.completed;
+					});
+				}
+
+				return App.tjsList.tjsItems();
 			},
-			itemsAcquired: function () {
-				return App.shoppingList.itmesLeft.filter(function (item) {
-					return item.completed;
+			tjsItems: function () {
+				return App.shoppingList.filter(function (item) {
+					return item.list === 'trader-joes-list';
 				});
 			}
 		},
-		getFilteredTjsList: function () {
-			if (this.filter === 'active') {
-				return
-			}
+		walmartList: {
+			filter: function () {
+				if (App.filter === 'walmart-items-left') {
+					var items = App.walmartList.walmartItems();
 
-			if (this.filter === 'completed') {
-				return;
-			}
+					return items.filter(function (item) {
+						return !item.completed;
+					});
+				}
 
-			return this.todos;
+				if (App.filter === 'walmart-items-acquired') {
+					var items = App.walmartList.walmartItems();
+					
+					return items.filter(function (item) {
+						return item.completed;
+					});
+				}
+
+				return App.walmartList.walmartItems();
+			},
+			walmartItems: function () {
+				return App.shoppingList.filter(function (item) {
+					return item.list === 'walmart-list';
+				});
+			}
+		},
+		miscList: {
+			filter: function () {
+				if (App.filter === 'misc-items-left') {
+					var items = App.miscList.miscItems();
+
+					return items.filter(function (item) {
+						return !item.completed;
+					});
+				}
+
+				if (App.filter === 'misc-items-acquired') {
+					var items = App.miscList.miscItems();
+					
+					return items.filter(function (item) {
+						return item.completed;
+					});
+				}
+
+				return App.miscList.miscItems();
+			},
+			miscItems: function () {
+				return App.shoppingList.filter(function (item) {
+					return item.list === 'misc-list';
+				});
+			}
 		},
 		getFilteredWalmartList: function () {
 			if (this.filter === 'active') {
@@ -199,17 +296,17 @@ jQuery(function ($) {
 		// },
 		// // accepts an element from inside the `.item` div and
 		// // returns the corresponding index in the `todos` array
-		// getIndexFromEl: function (el) {
-		// 	var id = $(el).closest('li').data('id');
-		// 	var todos = this.todos;
-		// 	var i = todos.length;
+		getIndexFromEl: function (el) {
+			var id = $(el).closest('li').data('id');
+			var shoppingList = this.shoppingList;
+			var i = shoppingList.length;
 
-		// 	while (i--) {
-		// 		if (todos[i].id === id) {
-		// 			return i;
-		// 		}
-		// 	}
-		// },
+			while (i--) {
+				if (shoppingList[i].id === id) {
+					return i;
+				}
+			}
+		},
 		create: function (e) {
 			var $input = $(e.target);
 			var val = $input.val().trim();
@@ -229,12 +326,12 @@ jQuery(function ($) {
 			$input.val('');
 
 			this.render();
+		},
+		toggle: function (e) {
+			var i = this.getIndexFromEl(e.target);
+			this.shoppingList[i].completed = !this.shoppingList[i].completed;
+			this.render();
 		}
-		// toggle: function (e) {
-		// 	var i = this.getIndexFromEl(e.target);
-		// 	this.todos[i].completed = !this.todos[i].completed;
-		// 	this.render();
-		// },
 		// editingMode: function (e) {
 		// 	var $input = $(e.target).closest('li').addClass('editing').find('.edit');
 		// 	$input.val($input.val()).focus();
@@ -277,10 +374,8 @@ jQuery(function ($) {
 
 
 // Notes;
-// - Working on sproutsList > itemsAcquired method, I think it works
-// but I have not updated App.bind so you cannot set the completed property to true.
-
-// - update bind so that it works with new App
-// - create sprouts footer
-// - update/create rest of sprouts object.
-// - explore this
+// - need to complete stilcy items 
+// each list now has it's own footer template.
+// need to test functionality 
+//  - add rest of existing methods
+//  - going to need snapshot...

@@ -18,9 +18,9 @@
 				<section class="main">
 					<input id="toggle-all" type="checkbox">
 					<label for="toggle-all">Mark all as complete</label>
-					<ul id="sticky-ul"></ul>
+					<ul id="sticky-ul" class="items"></ul>
 				</section>
-				<footer id="footer"></footer>
+				<footer id="sticky-footer"></footer>
 			</section>
 	<!-- End Sticky List section -->
 
@@ -31,22 +31,22 @@
 				<section class="main">
 					<input id="toggle-all" type="checkbox">
 					<label for="toggle-all">Mark all as complete</label>
-					<ul id="sprouts-ul"></ul>
+					<ul id="sprouts-ul" class="items"></ul>
 				</section>
-				<footer id="footer"></footer>
+				<footer id="sprouts-footer"></footer>
 			</section>
 	<!-- End Sprouts List section -->
 
 	<!-- Trader Joes List section -->
-			<section id="traderJoes-list">
+			<section id="trader-joes-list">
 				<h2>Trader Joes</h2>
 			    <input class="new-item" placeholder="Add Item to the list" autofocus>
 				<section class="main">
 					<input id="toggle-all" type="checkbox">
 					<label for="toggle-all">Mark all as complete</label>
-					<ul id="traderJoes-ul"></ul>
+					<ul id="traderJoes-ul" class="items"></ul>
 				</section>
-				<footer id="footer"></footer>
+				<footer id="tjs-footer"></footer>
 			</section>
 	<!-- End Trader Joes List section -->
 
@@ -57,9 +57,9 @@
 				<section class="main">
 					<input id="toggle-all" type="checkbox">
 					<label for="toggle-all">Mark all as complete</label>
-					<ul id="walmart-ul"></ul>
+					<ul id="walmart-ul" class="items"></ul>
 				</section>
-				<footer id="footer"></footer>
+				<footer id="walmart-footer"></footer>
 			</section>
 	<!-- End Walmart List section -->
 
@@ -70,9 +70,9 @@
 				<section class="main">
 					<input id="toggle-all" type="checkbox">
 					<label for="toggle-all">Mark all as complete</label>
-					<ul id="misc-ul"></ul>
+					<ul id="misc-ul" class="items"></ul>
 				</section>
-				<footer id="footer"></footer>
+				<footer id="misc-footer"></footer>
 			</section>
 	<!-- End Misc. List section -->
 		
@@ -100,27 +100,101 @@
 		</script>
 
 
-	<!-- Footer templates -->
+<!-- Footer templates -->
 
-	<!-- Sticky footer template -->
-		<script id="footer-template" type="text/x-handlebars-template">
+<!-- Sticky footer template -->
+		<script id="sticky-footer-template" type="text/x-handlebars-template">
 			<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
 			<ul id="filters">
 				<li>
-					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/sprouts-items-left">All</a>
+					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/sticky-items">All</a>
 				</li>
 				<li>
-					<a {{#eq filter 'active'}}class="selected"{{/eq}} href="#/sprouts-items-acquired">Active</a>
+					<a {{#eq filter 'active'}}class="selected"{{/eq}} href="#/sticky-items-left">Active</a>
 				</li>
 				<li>
-					<a {{#eq filter 'completed'}}class="selected"{{/eq}}href="#/completed">Completed</a>
+					<a {{#eq filter 'completed'}}class="selected"{{/eq}} href="#/sticky-items-completed">Completed</a>
 				</li>
 			</ul>
 			{{#if completedTodos}}<button id="clear-completed">Clear completed</button>{{/if}}
 		</script>
-	<!-- End Sticky footer template -->
-	<!-- End Footer templates -->
-	<!-- End templates -->
+<!-- End Sticky footer template -->
+
+<!-- Sprouts footer template -->
+		<script id="sprouts-footer-template" type="text/x-handlebars-template">
+			<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
+			<ul id="filters">
+				<li>
+					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/sprouts-items">All</a>
+				</li>
+				<li>
+					<a {{#eq filter 'active'}}class="selected"{{/eq}} href="#/sprouts-items-left">Active</a>
+				</li>
+				<li>
+					<a {{#eq filter 'completed'}}class="selected"{{/eq}} href="#/sprouts-items-acquired">Completed</a>
+				</li>
+			</ul>
+			{{#if completedTodos}}<button id="clear-completed">Clear completed</button>{{/if}}
+		</script>
+<!-- End Sprouts footer template -->
+
+<!-- Trader Joes footer template -->
+		<script id="tjs-footer-template" type="text/x-handlebars-template">
+			<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
+			<ul id="filters">
+				<li>
+					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/tjs-items">All</a>
+				</li>
+				<li>
+					<a {{#eq filter 'active'}}class="selected"{{/eq}} href="#/tjs-items-left">Active</a>
+				</li>
+				<li>
+					<a {{#eq filter 'completed'}}class="selected"{{/eq}} href="#/tjs-items-acquired">Completed</a>
+				</li>
+			</ul>
+			{{#if completedTodos}}<button id="clear-completed">Clear completed</button>{{/if}}
+		</script>
+<!-- ENd Trader Joes footer template -->
+	
+<!-- Walmart footer template -->
+		<script id="walmart-footer-template" type="text/x-handlebars-template">
+			<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
+			<ul id="filters">
+				<li>
+					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/walmart-items">All</a>
+				</li>
+				<li>
+					<a {{#eq filter 'active'}}class="selected"{{/eq}} href="#/walmart-items-left">Active</a>
+				</li>
+				<li>
+					<a {{#eq filter 'completed'}}class="selected"{{/eq}} href="#/walmart-items-acquired">Completed</a>
+				</li>
+			</ul>
+			{{#if completedTodos}}<button id="clear-completed">Clear completed</button>{{/if}}
+		</script>
+<!-- End Walmart footer template -->
+	
+<!-- Misc footer template -->
+		<script id="misc-footer-template" type="text/x-handlebars-template">
+			<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
+			<ul id="filters">
+				<li>
+					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/misc-items">All</a>
+				</li>
+				<li>
+					<a {{#eq filter 'active'}}class="selected"{{/eq}} href="#/misc-items-left">Active</a>
+				</li>
+				<li>
+					<a {{#eq filter 'completed'}}class="selected"{{/eq}} href="#/misc-items-acquired">Completed</a>
+				</li>
+			</ul>
+			{{#if completedTodos}}<button id="clear-completed">Clear completed</button>{{/if}}
+		</script>
+<!-- End Misc footer template -->
+
+
+<!-- End Footer templates -->
+<!-- End templates -->
 
 		<script src="node_modules/jquery/dist/jquery.js"></script>
 		<script src="node_modules/handlebars/dist/handlebars.js"></script>

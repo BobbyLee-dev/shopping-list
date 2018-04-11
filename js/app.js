@@ -61,14 +61,18 @@ jQuery(function ($) {
 		},
 		bindEvents: function () {
 			$('.new-item').on('keyup', this.create.bind(this));
-			// $('#toggle-all').on('change', this.toggleAll.bind(this));
+			$('#toggle-all-sticky').on('change', this.toggleAll.sticky.bind(this));
+			$('#toggle-all-sprouts').on('change', this.toggleAll.sprouts.bind(this));
+			$('#toggle-all-tjs').on('change', this.toggleAll.tjs.bind(this));
+			$('#toggle-all-walmart').on('change', this.toggleAll.walmart.bind(this));
+			$('#toggle-all-misc').on('change', this.toggleAll.misc.bind(this));
 			// $('#footer').on('click', '#clear-completed', this.destroyCompleted.bind(this));
 			$('.items')
 				.on('change', '.toggle', this.toggle.bind(this))
-			// 	.on('dblclick', 'label', this.editingMode.bind(this))
-			// 	.on('keyup', '.edit', this.editKeyup.bind(this))
-			// 	.on('focusout', '.edit', this.update.bind(this))
-			// 	.on('click', '.destroy', this.destroy.bind(this));
+				.on('dblclick', 'label', this.editingMode.bind(this))
+				.on('keyup', '.edit', this.editKeyup.bind(this))
+				.on('focusout', '.edit', this.update.bind(this))
+				.on('click', '.destroy', this.destroy.bind(this));
 		},
 		render: function () {
 			var stickyItems = this.stickyItems;
@@ -76,12 +80,14 @@ jQuery(function ($) {
 			var tjsList = this.tjsList;
 			var walmartList = this.walmartList;
 			var miscList = this.miscList;
-			$('#sticky-ul').html(this.listTemplate(stickyItems.filter));
+			$('#sticky-ul').html(this.listTemplate(stickyItems.filter()));
 			$('#sprouts-ul').html(this.listTemplate(sproutsList.filter));
 			$('#traderJoes-ul').html(this.listTemplate(tjsList.filter));
 			$('#walmart-ul').html(this.listTemplate(walmartList.filter));
 			$('#misc-ul').html(this.listTemplate(miscList.filter));
 			// $('.main').toggle(todos.length > 0);
+
+			// this sets the checked prop of toggle all when all todos are selected manually
 			// $('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
 			this.renderFooter();
 			// $('.new-item').focus();
@@ -92,7 +98,7 @@ jQuery(function ($) {
 			var shoppingList = this.shoppingList.length;
 			// var activeTodoCount = this.getActiveTodos().length;
 			var stickyTemplate = this.stickyFooterTemplate({
-				// activeTodoCount: activeTodoCount,
+				activeTodoCount: this.stickyItems.filter().length,
 				// activeTodoWord: util.pluralize(activeTodoCount, 'item'),
 				// completedTodos: todoCount - activeTodoCount,
 				filter: this.filter
@@ -132,15 +138,54 @@ jQuery(function ($) {
 			$('#walmart-footer').toggle(shoppingList > 0).html(walmartTemplate);
 			$('#misc-footer').toggle(shoppingList > 0).html(miscTemplate);
 		},
-		// toggleAll: function (e) {
-		// 	var isChecked = $(e.target).prop('checked');
+		// toggleAll object holds all toggleAll methods for each list
+		toggleAll: {
+			sticky: function (e) {
+				var isChecked = $(e.target).prop('checked');
 
-		// 	this.todos.forEach(function (todo) {
-		// 		todo.completed = isChecked;
-		// 	});
+				App.stickyItems.filter().forEach(function (item) {
+					item.completed = isChecked;
+				});
 
-		// 	this.render();
-		// },
+				this.render();
+			},
+			sprouts: function (e) {
+				var isChecked = $(e.target).prop('checked');
+
+				App.sproutsList.sproutsItems().forEach(function (item) {
+					item.completed = isChecked;
+				});
+
+				this.render();
+			},
+			tjs: function (e) {
+				var isChecked = $(e.target).prop('checked');
+
+				App.tjsList.tjsItems().forEach(function (item) {
+					item.completed = isChecked;
+				});
+
+				this.render();
+			},
+			walmart: function (e) {
+				var isChecked = $(e.target).prop('checked');
+
+				App.walmartList.walmartItems().forEach(function (item) {
+					item.completed = isChecked;
+				});
+
+				this.render();
+			},
+			misc: function (e) {
+				var isChecked = $(e.target).prop('checked');
+
+				App.miscList.miscItems().forEach(function (item) {
+					item.completed = isChecked;
+				});
+
+				this.render();
+			},
+		},
 		// getActiveTodos: function () {
 		// 	return this.todos.filter(function (todo) {
 		// 		return !todo.completed;
@@ -155,11 +200,10 @@ jQuery(function ($) {
 		
 		stickyItems: {
 			filter: function () {
-				
-				return {title: 'test123'};
+				return App.shoppingList.filter(function (item) {
+					return item.list === 'sticky-items';
+				});
 			}
-
-			
 		},
 		sproutsList: {
 			filter: function () {
@@ -265,30 +309,6 @@ jQuery(function ($) {
 				});
 			}
 		},
-		getFilteredWalmartList: function () {
-			if (this.filter === 'active') {
-				return;
-			}
-
-			if (this.filter === 'completed') {
-				return;
-			}
-
-			return this.todos;
-		},
-		getFilteredMiscList: function () {
-			if (this.filter === 'active') {
-				return;
-			}
-
-			if (this.filter === 'completed') {
-				return;
-			}
-
-			return this.todos;
-		}, 
-
-
 		// destroyCompleted: function () {
 		// 	this.todos = this.getActiveTodos();
 		// 	this.filter = 'all';
@@ -331,51 +351,58 @@ jQuery(function ($) {
 			var i = this.getIndexFromEl(e.target);
 			this.shoppingList[i].completed = !this.shoppingList[i].completed;
 			this.render();
+		},
+		editingMode: function (e) {
+			var $input = $(e.target).closest('li').addClass('editing').find('.edit');
+			$input.val($input.val()).focus();
+		},
+		editKeyup: function (e) {
+			if (e.which === ENTER_KEY) {
+				e.target.blur();
+			}
+
+			if (e.which === ESCAPE_KEY) {
+				$(e.target).data('abort', true).blur();
+			}
+		},
+		update: function (e) {
+			var el = e.target;
+			var $el = $(el);
+			var val = $el.val().trim();
+
+			if (!val) {
+				this.destroy(e);
+				return;
+			}
+
+			if ($el.data('abort')) {
+				$el.data('abort', false);
+			} else {
+				this.shoppingList[this.getIndexFromEl(el)].title = val;
+			}
+
+			this.render();
+		},
+		destroy: function (e) {
+			this.shoppingList.splice(this.getIndexFromEl(e.target), 1);
+			this.render();
 		}
-		// editingMode: function (e) {
-		// 	var $input = $(e.target).closest('li').addClass('editing').find('.edit');
-		// 	$input.val($input.val()).focus();
-		// },
-		// editKeyup: function (e) {
-		// 	if (e.which === ENTER_KEY) {
-		// 		e.target.blur();
-		// 	}
-
-		// 	if (e.which === ESCAPE_KEY) {
-		// 		$(e.target).data('abort', true).blur();
-		// 	}
-		// },
-		// update: function (e) {
-		// 	var el = e.target;
-		// 	var $el = $(el);
-		// 	var val = $el.val().trim();
-
-		// 	if (!val) {
-		// 		this.destroy(e);
-		// 		return;
-		// 	}
-
-		// 	if ($el.data('abort')) {
-		// 		$el.data('abort', false);
-		// 	} else {
-		// 		this.todos[this.getIndexFromEl(el)].title = val;
-		// 	}
-
-		// 	this.render();
-		// },
-		// destroy: function (e) {
-		// 	this.todos.splice(this.getIndexFromEl(e.target), 1);
-		// 	this.render();
-		// }
 	};
 
 	App.init();
 });
 
 
-// Notes;
-// - need to complete stilcy items 
-// each list now has it's own footer template.
-// need to test functionality 
-//  - add rest of existing methods
-//  - going to need snapshot...
+// css/html
+// update the filters id on all footer templates. sticky-filters etc...
+// then update css replacing all #filters.
+
+// implment clear completed - deystroyCompleted functionality on all lists.
+// finish implementing footer templates.
+
+// - move footer/filters to top 
+// - toggle list when empty, look a commented out render lines
+
+// - snapshot
+
+// - start brain storming how lists/stores could be added dynamiclly - create methods etc.

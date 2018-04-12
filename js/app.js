@@ -1,4 +1,4 @@
-/*global jQuery, Handlebars, Router */
+/*global jQuery, Handlebars, Router snapshot*/
 jQuery(function ($) {
 	'use strict';
 

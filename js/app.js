@@ -1,4 +1,4 @@
-/*global jQuery, Handlebars, Router snapshot*/
+/*global jQuery, Handlebars, Router */
 jQuery(function ($) {
 	'use strict';
 
@@ -75,7 +75,7 @@ jQuery(function ($) {
 				.on('click', '.destroy', this.destroy.bind(this));
 		},
 		render: function () {
-			var stickyList = this.stickyList;
+			var stickyList = this.stickyList.bind(stickyList);
 			var sproutsList = this.sproutsList;
 			var tjsList = this.tjsList;
 			var walmartList = this.walmartList;
@@ -91,8 +91,15 @@ jQuery(function ($) {
 			// $('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
 			this.renderFooter();
 			// $('.new-item').focus();
-			// console.log(this.shoppingList);
 			util.store('shoppingList', this.shoppingList);
+
+			this.snapshot()
+		},
+		snapshot: function () {
+			var test = this.shoppingList.forEach(function (item) {
+				console.log(item.id);
+			});
+			
 		},
 		renderFooter: function () {
 			var shoppingList = this.shoppingList.length;

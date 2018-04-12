@@ -75,12 +75,12 @@ jQuery(function ($) {
 				.on('click', '.destroy', this.destroy.bind(this));
 		},
 		render: function () {
-			var stickyItems = this.stickyItems;
+			var stickyList = this.stickyList;
 			var sproutsList = this.sproutsList;
 			var tjsList = this.tjsList;
 			var walmartList = this.walmartList;
 			var miscList = this.miscList;
-			$('#sticky-ul').html(this.listTemplate(stickyItems.filter()));
+			$('#sticky-ul').html(this.listTemplate(stickyList.filter()));
 			$('#sprouts-ul').html(this.listTemplate(sproutsList.filter));
 			$('#traderJoes-ul').html(this.listTemplate(tjsList.filter));
 			$('#walmart-ul').html(this.listTemplate(walmartList.filter));
@@ -91,14 +91,14 @@ jQuery(function ($) {
 			// $('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
 			this.renderFooter();
 			// $('.new-item').focus();
-			console.log(this.shoppingList);
+			// console.log(this.shoppingList);
 			util.store('shoppingList', this.shoppingList);
 		},
 		renderFooter: function () {
 			var shoppingList = this.shoppingList.length;
 			// var activeTodoCount = this.getActiveTodos().length;
 			var stickyTemplate = this.stickyFooterTemplate({
-				activeTodoCount: this.stickyItems.filter().length,
+				activeTodoCount: this.stickyList.filter().length,
 				// activeTodoWord: util.pluralize(activeTodoCount, 'item'),
 				// completedTodos: todoCount - activeTodoCount,
 				filter: this.filter
@@ -125,7 +125,7 @@ jQuery(function ($) {
 				filter: this.filter
 			});
 
-			var miscTemplate = this.walmartFooterTemplate({
+			var miscTemplate = this.miscFooterTemplate({
 				// activeTodoCount: activeTodoCount,
 				// activeTodoWord: util.pluralize(activeTodoCount, 'item'),
 				// completedTodos: todoCount - activeTodoCount,
@@ -143,7 +143,7 @@ jQuery(function ($) {
 			sticky: function (e) {
 				var isChecked = $(e.target).prop('checked');
 
-				App.stickyItems.filter().forEach(function (item) {
+				this.stickyList.filter().forEach(function (item) {
 					item.completed = isChecked;
 				});
 
@@ -152,7 +152,7 @@ jQuery(function ($) {
 			sprouts: function (e) {
 				var isChecked = $(e.target).prop('checked');
 
-				App.sproutsList.sproutsItems().forEach(function (item) {
+				this.sproutsList.sproutsItems().forEach(function (item) {
 					item.completed = isChecked;
 				});
 
@@ -161,7 +161,7 @@ jQuery(function ($) {
 			tjs: function (e) {
 				var isChecked = $(e.target).prop('checked');
 
-				App.tjsList.tjsItems().forEach(function (item) {
+				this.tjsList.tjsItems().forEach(function (item) {
 					item.completed = isChecked;
 				});
 
@@ -170,7 +170,7 @@ jQuery(function ($) {
 			walmart: function (e) {
 				var isChecked = $(e.target).prop('checked');
 
-				App.walmartList.walmartItems().forEach(function (item) {
+				this.walmartList.walmartItems().forEach(function (item) {
 					item.completed = isChecked;
 				});
 
@@ -179,7 +179,7 @@ jQuery(function ($) {
 			misc: function (e) {
 				var isChecked = $(e.target).prop('checked');
 
-				App.miscList.miscItems().forEach(function (item) {
+				this.miscList.miscItems().forEach(function (item) {
 					item.completed = isChecked;
 				});
 
@@ -198,8 +198,27 @@ jQuery(function ($) {
 		// },
 
 		
-		stickyItems: {
+		stickyList: {
 			filter: function () {
+				if (App.filter === 'sticky-items-left') {
+					var items = App.stickyList.stickyItems();
+
+					return items.filter(function (item) {
+						return !item.completed;
+					});
+				}
+
+				if (App.filter === 'sticky-items-acquired') {
+					var items = App.stickyList.stickyItems();
+					
+					return items.filter(function (item) {
+						return item.completed;
+					});
+				}
+
+				return App.stickyList.stickyItems();
+			},
+			stickyItems: function () {
 				return App.shoppingList.filter(function (item) {
 					return item.list === 'sticky-items';
 				});
@@ -393,9 +412,6 @@ jQuery(function ($) {
 });
 
 
-// css/html
-// update the filters id on all footer templates. sticky-filters etc...
-// then update css replacing all #filters.
 
 // implment clear completed - deystroyCompleted functionality on all lists.
 // finish implementing footer templates.

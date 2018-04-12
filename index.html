@@ -105,15 +105,15 @@
 <!-- Sticky footer template -->
 		<script id="sticky-footer-template" type="text/x-handlebars-template">
 			<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
-			<ul id="filters">
+			<ul id="sticky-filters">
 				<li>
-					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/sticky-items">All</a>
+					<a {{#eq filter 'sticky-items'}}class="selected"{{/eq}} href="#/sticky-items">All</a>
 				</li>
 				<li>
-					<a {{#eq filter 'active'}}class="selected"{{/eq}} href="#/sticky-items-left">Active</a>
+					<a {{#eq filter 'sticky-items-left'}}class="selected"{{/eq}} href="#/sticky-items-left">Active</a>
 				</li>
 				<li>
-					<a {{#eq filter 'completed'}}class="selected"{{/eq}} href="#/sticky-items-completed">Completed</a>
+					<a {{#eq filter 'sticky-items-acquired'}}class="selected"{{/eq}} href="#/sticky-items-acquired">Completed</a>
 				</li>
 			</ul>
 			{{#if completedTodos}}<button id="clear-completed">Clear completed</button>{{/if}}
@@ -123,15 +123,15 @@
 <!-- Sprouts footer template -->
 		<script id="sprouts-footer-template" type="text/x-handlebars-template">
 			<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
-			<ul id="filters">
+			<ul id="sprouts-filters">
 				<li>
-					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/sprouts-items">All</a>
+					<a {{#eq filter 'sprouts-items'}}class="selected"{{/eq}} href="#/sprouts-items">All</a>
 				</li>
 				<li>
-					<a {{#eq filter 'active'}}class="selected"{{/eq}} href="#/sprouts-items-left">Active</a>
+					<a {{#eq filter 'sprouts-items-left'}}class="selected"{{/eq}} href="#/sprouts-items-left">Active</a>
 				</li>
 				<li>
-					<a {{#eq filter 'completed'}}class="selected"{{/eq}} href="#/sprouts-items-acquired">Completed</a>
+					<a {{#eq filter 'sprouts-items-acquired'}}class="selected"{{/eq}} href="#/sprouts-items-acquired">Completed</a>
 				</li>
 			</ul>
 			{{#if completedTodos}}<button id="clear-completed">Clear completed</button>{{/if}}
@@ -141,15 +141,15 @@
 <!-- Trader Joes footer template -->
 		<script id="tjs-footer-template" type="text/x-handlebars-template">
 			<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
-			<ul id="filters">
+			<ul id="tjs-filters">
 				<li>
-					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/tjs-items">All</a>
+					<a {{#eq filter 'tjs-items'}}class="selected"{{/eq}} href="#/tjs-items">All</a>
 				</li>
 				<li>
-					<a {{#eq filter 'active'}}class="selected"{{/eq}} href="#/tjs-items-left">Active</a>
+					<a {{#eq filter 'tjs-items-left'}}class="selected"{{/eq}} href="#/tjs-items-left">Active</a>
 				</li>
 				<li>
-					<a {{#eq filter 'completed'}}class="selected"{{/eq}} href="#/tjs-items-acquired">Completed</a>
+					<a {{#eq filter 'tjs-items-acquired'}}class="selected"{{/eq}} href="#/tjs-items-acquired">Completed</a>
 				</li>
 			</ul>
 			{{#if completedTodos}}<button id="clear-completed">Clear completed</button>{{/if}}
@@ -159,15 +159,15 @@
 <!-- Walmart footer template -->
 		<script id="walmart-footer-template" type="text/x-handlebars-template">
 			<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
-			<ul id="filters">
+			<ul id="walmart-filters">
 				<li>
-					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/walmart-items">All</a>
+					<a {{#eq filter 'walmart-items'}}class="selected"{{/eq}} href="#/walmart-items">All</a>
 				</li>
 				<li>
-					<a {{#eq filter 'active'}}class="selected"{{/eq}} href="#/walmart-items-left">Active</a>
+					<a {{#eq filter 'walmart-items-left'}}class="selected"{{/eq}} href="#/walmart-items-left">Active</a>
 				</li>
 				<li>
-					<a {{#eq filter 'completed'}}class="selected"{{/eq}} href="#/walmart-items-acquired">Completed</a>
+					<a {{#eq filter 'walmart-items-acquired'}}class="selected"{{/eq}} href="#/walmart-items-acquired">Completed</a>
 				</li>
 			</ul>
 			{{#if completedTodos}}<button id="clear-completed">Clear completed</button>{{/if}}
@@ -177,15 +177,15 @@
 <!-- Misc footer template -->
 		<script id="misc-footer-template" type="text/x-handlebars-template">
 			<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
-			<ul id="filters">
+			<ul id="misc-filters">
 				<li>
-					<a {{#eq filter 'all'}}class="selected"{{/eq}} href="#/misc-items">All</a>
+					<a {{#eq filter 'misc-items'}}class="selected"{{/eq}} href="#/misc-items">All</a>
 				</li>
 				<li>
-					<a {{#eq filter 'active'}}class="selected"{{/eq}} href="#/misc-items-left">Active</a>
+					<a {{#eq filter 'misc-items-left'}}class="selected"{{/eq}} href="#/misc-items-left">Active</a>
 				</li>
 				<li>
-					<a {{#eq filter 'completed'}}class="selected"{{/eq}} href="#/misc-items-acquired">Completed</a>
+					<a {{#eq filter 'misc-items-acquired'}}class="selected"{{/eq}} href="#/misc-items-acquired">Completed</a>
 				</li>
 			</ul>
 			{{#if completedTodos}}<button id="clear-completed">Clear completed</button>{{/if}}

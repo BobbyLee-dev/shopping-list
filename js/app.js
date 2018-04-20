@@ -1,4 +1,4 @@
-/*global jQuery, Handlebars, Router */
+/*global jQuery, Handlebars, Router test */
 jQuery(function ($) {
 	'use strict';
 
@@ -85,15 +85,31 @@ jQuery(function ($) {
 			$('#traderJoes-ul').html(this.listTemplate(tjsList.filter));
 			$('#walmart-ul').html(this.listTemplate(walmartList.filter));
 			$('#misc-ul').html(this.listTemplate(miscList.filter));
-			// $('.main').toggle(todos.length > 0);
+			// $('main').toggle(todos.length > 0);
 
 			// this sets the checked prop of toggle all when all todos are selected manually
 			// $('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
+			$('#toggle-all-sticky').prop('checked', this.stickyList.itemsNeeded().length === 0);
+			$('#toggle-all-sprouts').prop('checked', this.sproutsList.itemsNeeded().length === 0);
+			$('#toggle-all-tjs').prop('checked', this.tjsList.itemsNeeded().length === 0);
+			$('#toggle-all-walmart').prop('checked', this.walmartList.itemsNeeded().length === 0);
+			$('#toggle-all-misc').prop('checked', this.miscList.itemsNeeded().length === 0);
 			this.renderFooter();
-			// $('.new-item').focus();
-			// console.log(this.shoppingList);
+			
 			util.store('shoppingList', this.shoppingList);
+
+			
 		},
+		// test to grab items when whatList can be any list
+		// items: function (whatList) {
+		// 	var test = [];
+		// 	for(var i = 0; i < this.shoppingList.length; i++) {
+		// 		if (this.shoppingList[i].list == whatList) {
+		// 			test.push(this.shoppingList[i]);
+		// 		}
+		// 	}
+		// 	return test;
+		// },
 		renderFooter: function () {
 			var shoppingList = this.shoppingList.length;
 			// var activeTodoCount = this.getActiveTodos().length;
@@ -201,11 +217,8 @@ jQuery(function ($) {
 		stickyList: {
 			filter: function () {
 				if (App.filter === 'sticky-items-left') {
-					var items = App.stickyList.stickyItems();
-
-					return items.filter(function (item) {
-						return !item.completed;
-					});
+					
+					this.itemsNeeded();
 				}
 
 				if (App.filter === 'sticky-items-acquired') {
@@ -221,6 +234,13 @@ jQuery(function ($) {
 			stickyItems: function () {
 				return App.shoppingList.filter(function (item) {
 					return item.list === 'sticky-items';
+				});
+			},
+			itemsNeeded: function () {
+				var items = App.stickyList.stickyItems();
+
+				return items.filter(function (item) {
+					return !item.completed;
 				});
 			}
 		},
@@ -248,7 +268,15 @@ jQuery(function ($) {
 				return App.shoppingList.filter(function (item) {
 					return item.list === 'sprouts-list';
 				});
+			},
+			itemsNeeded: function () {
+				var items = App.sproutsList.sproutsItems();
+
+				return items.filter(function (item) {
+					return !item.completed;
+				});
 			}
+
 		},
 		tjsList: {
 			filter: function () {
@@ -273,6 +301,13 @@ jQuery(function ($) {
 			tjsItems: function () {
 				return App.shoppingList.filter(function (item) {
 					return item.list === 'trader-joes-list';
+				});
+			},
+			itemsNeeded: function () {
+				var items = App.tjsList.tjsItems();
+
+				return items.filter(function (item) {
+					return !item.completed;
 				});
 			}
 		},
@@ -300,6 +335,13 @@ jQuery(function ($) {
 				return App.shoppingList.filter(function (item) {
 					return item.list === 'walmart-list';
 				});
+			},
+			itemsNeeded: function () {
+				var items = App.walmartList.walmartItems();
+
+				return items.filter(function (item) {
+					return !item.completed;
+				});
 			}
 		},
 		miscList: {
@@ -325,6 +367,13 @@ jQuery(function ($) {
 			miscItems: function () {
 				return App.shoppingList.filter(function (item) {
 					return item.list === 'misc-list';
+				});
+			},
+			itemsNeeded: function () {
+				var items = App.miscList.miscItems();
+
+				return items.filter(function (item) {
+					return !item.completed;
 				});
 			}
 		},
